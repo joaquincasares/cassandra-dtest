@@ -59,6 +59,53 @@ Installation Instructions
 
 See more detailed instructions in the included [INSTALL file](https://github.com/riptano/cassandra-dtest/blob/master/INSTALL.md).
 
+Run Tests using Docker Compose
+------------------------------
+
+To only run the in-Cassandra-source unit tests:
+
+```bash
+# build the container image
+docker-compose build unittests
+
+# run the unit tests
+docker-compose run unittests [$GITHUB_REPO] [$BRANCH]
+```
+
+To run all the tests (unit tests and distributed tests):
+
+```bash
+# build the container image
+docker-compose build dtests
+
+# run the unit tests and distributed tests
+docker-compose run dtests [$GITHUB_REPO] [$BRANCH]
+```
+
+To skip the unit tests and run a specific distributed test:
+
+```bash
+# build the container image
+docker-compose build dtests
+
+# run the unit tests and distributed tests
+docker-compose run dtests [$GITHUB_REPO] [$BRANCH] [$NOSETESTS_FILE.py[:$PYTHON_CLASS[.PYTHON_TEST]]]
+```
+
+Here are a list of example runs:
+
+```bash
+docker-compose run unittests apache trunk
+
+docker-compose run dtests apache trunk
+docker-compose run dtests apache cassandra-3.0
+docker-compose run dtests joaquincasares CASSANDRA-13915
+
+docker-compose run dtests apache trunk auth_test.py
+docker-compose run dtests apache trunk auth_test.py:TestAuth
+docker-compose run dtests apache trunk auth_test.py:TestAuth.alter_cf_auth_test
+```
+
 Writing Tests
 -------------
 
